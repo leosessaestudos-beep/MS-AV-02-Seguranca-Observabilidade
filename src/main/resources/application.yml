@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: seguranca-observabilidade
+
+  datasource:
+    url: jdbc:h2:mem:segurancadb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  sql:
+    init:
+      mode: always
+
+# Actuator + Micrometer + Prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Regra de bloqueio: o usuario e bloqueado quando o total de falhas
+# consecutivas fica MAIOR que este valor (1 => bloqueia na 2a falha)
+seguranca:
+  login:
+    max-falhas: 1
+
+# Swagger UI: http://localhost:8080/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

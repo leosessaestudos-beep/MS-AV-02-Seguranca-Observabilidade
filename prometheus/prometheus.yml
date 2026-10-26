@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'seguranca-app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      # Nome do servico no docker-compose.yml.
+      # Se voce rodar a aplicacao FORA do Docker (mvn spring-boot:run), troque por
+      # 'host.docker.internal:8080' (e, no Linux, adicione extra_hosts no compose).
+      - targets: ['app:8080']
